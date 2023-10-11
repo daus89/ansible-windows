@@ -1,0 +1,42 @@
+---
+- name: Install required Python packages
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Install pywinrm
+      pip:
+        name: pywinrm
+        state: present
+
+- name: Configure WinRM Connection Parameters
+  hosts: windows  # Replace with the actual host name or group name in your inventory
+  gather_facts: no
+
+  tasks:
+    - name: Set WinRM connection parameters
+      set_fact:
+       ansible_user: "{{vaulted_ansible_password}}"
+       ansible_password: "{{vaulted_ansible_user}}"
+       ansible_connection: winrm
+       ansible_winrm_server_cert_validation: ignore
+       ansible_winrm_transport: basic
+       ansible_winrm_port: 5986
+      vars:
+       vaulted_ansible_password:"{{lookup('file','/etc/ansible/vaults/windows-password.yml') | from_yaml}}"
+       vaulted_ansible_user:"{{lookup('file','/etc/ansible/vaults/windows-password.yml') | from_yaml}}"
+
+- name: Install package from an installation link on Windows Server
+  hosts: windows
+  tasks:
+    - name: Download package from the link
+      win_get_url:
+        url: http://10.22.21.172:8081/share/KcsSetup.exe  # Replace with the actual package URL
+        dest: C:\temp\  # Destination where the package will be downloaded
+      register: download_result
+
+    - name: Install the downloaded package
+      ##win_command: msiexec.exe /i C:\Users\Administrator\Downloads\KcsSetup.exe /qn  # Modify the installation command as needed
+      ##win_command: C:\Users\Administrator\Downloads\KcsSetup.exe
+      win_package:
+       path: C:\temp\KcsSetup.exe
+       state: present
