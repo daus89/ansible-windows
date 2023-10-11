@@ -15,9 +15,9 @@
   tasks:
     - name: Set WinRM connection parameters
       set_fact:
-        #ansible_user: svcAnsible
-        #ansible_password: V@seline2023
-        ansible_user: administrator
+        ##ansible_user: svcAnsible
+        ##ansible_password: V@seline2023
+        ansible_user: Administrator
         ansible_password: P@ssword.123
         ansible_connection: winrm
         ansible_winrm_server_cert_validation: ignore
