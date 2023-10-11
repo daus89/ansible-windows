@@ -1,5 +1,13 @@
 ---
-
+- name: Install required Python packages
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Install pywinrm
+      pip:
+        name: pywinrm
+        state: present
+        
 - name: Configure WinRM Connection Parameters
   hosts: windows  # Replace with the actual host name or group name in your inventory
   gather_facts: no
@@ -13,7 +21,7 @@
         ansible_winrm_server_cert_validation: ignore
         ansible_winrm_transport: basic
         ansible_winrm_port: 5985
-        
+
 - name: Install package from an installation link on Windows Server
   hosts: windows
   tasks:
