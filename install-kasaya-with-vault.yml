@@ -22,8 +22,8 @@
        ansible_winrm_transport: basic
        ansible_winrm_port: 5986
       vars:
-       vaulted_ansible_password:"{{lookup('file','/etc/ansible/vaults/windows-password.yml') | from_yaml}}"
-       vaulted_ansible_user:"{{lookup('file','/etc/ansible/vaults/windows-password.yml') | from_yaml}}"
+       vaulted_ansible_password: "{{lookup('file','/etc/ansible/vaults/windows-password.yml') | from_yaml}}"
+       vaulted_ansible_user: "{{lookup('file','/etc/ansible/vaults/windows-password.yml') | from_yaml}}"
 
 - name: Install package from an installation link on Windows Server
   hosts: windows
